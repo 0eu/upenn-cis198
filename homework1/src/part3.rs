@@ -7,10 +7,6 @@
     Also answer the questions in text.
 */
 
-// Remove these once you are done editing the file!
-#![allow(dead_code)]
-#![allow(unused_variables)]
-
 /*
     Problem 1: Swap ints
 
@@ -338,183 +334,6 @@ fn test_delete_negative_keys() {
 }
 
 /*
-//     Problem 9: The Entry API
-//
-//     Use .clone() if necessary to make any additional unit tests compile.
-//
-//     Which of these functions do you prefer? Which is the most efficient?
-// */
-//
-// fn pad_with_zeros_v1(v: Vec<usize>, desired_len: usize) -> Vec<usize> {
-//     unimplemented!()
-//     // debug_assert_eq!(result.len(), desired_len);
-// }
-
-// #[test]
-// fn copy_me_test() {
-//     let str1 = String::from("foo");
-//     assert_eq!(str1, copy_me(/* Change in here only*/ str1));
-// }
-
-// #[test]
-// fn copy_me_test2() {
-//     let str1 = String::from("foo");
-//     let str2 = copy_me(str1 /* Change in here only*/);
-//     assert_eq!(str1, str2);
-// }
-
-/*
-    Problem 4: Lifetime specifiers
-
-    For each of the following three functions, either implement it by adding
-    lifetime specifiers, or explain why this is not possible.
-
-    (It's not truly impossible -- we will see later on that advanced features
-    such as "unsafe code" can be used to turn off Rust's safety and lifetime
-    checks.)
-*/
-// fn new_ref_string() -> &String {
-//     unimplemented!();
-// }
-
-// fn new_ref_str() -> &str {
-//     unimplemented!();
-// }
-
-// The same function from part2
-// fn pick_longest2(s1: &str, s2: &str) -> &str {
-//     unimplemented!()
-// }
-
-/*
-    Problem 5: Using functions with lifetimes
-
-    Write two versions of a function which returns the longest string in a
-    vector, using pick_longest2 as a helper function.
-
-    If the vector is empty, return "".
-
-    Q1. In pick_longest_in_v2, if you were to explicitly specify the lifetime
-        of the input and output, what should it be?
-
-    Q2. What are the pros and cons of v1 and v2?
-*/
-
-fn pick_longest_in_v1(v: Vec<String>) -> String {
-    unimplemented!()
-}
-
-fn pick_longest_in_v2(v: Vec<&str>) -> &str {
-    unimplemented!()
-}
-
-/*
-    Problem 6: Move semantics
-
-    Write three versions of a function that pads a vector with zeros.
-    Fail if the vector is larger than the desired length.
-
-    Use .clone() if necessary to make any additional unit tests compile.
-
-    Which of these functions do you prefer? Which is the most efficient?
-*/
-
-fn pad_with_zeros_v1(v: Vec<usize>, desired_len: usize) -> Vec<usize> {
-    unimplemented!()
-    // debug_assert_eq!(result.len(), desired_len);
-}
-
-fn pad_with_zeros_v2(slice: &[usize], desired_len: usize) -> Vec<usize> {
-    unimplemented!()
-    // debug_assert_eq!(result.len(), desired_len);
-}
-
-fn pad_with_zeros_v3(v: &mut Vec<usize>, desired_len: usize) {
-    unimplemented!()
-    // debug_assert_eq!(v.len(), desired_len);
-}
-
-#[test]
-fn test_pad_twice_v1() {
-    let v = vec![1];
-    let v = pad_with_zeros_v1(v, 2);
-    let v = pad_with_zeros_v1(v, 4);
-    assert_eq!(v, vec![1, 0, 0, 0]);
-}
-
-#[test]
-fn test_pad_twice_v2() {
-    let v = vec![1];
-    let v = pad_with_zeros_v2(&v, 2);
-    let v = pad_with_zeros_v2(&v, 4);
-    assert_eq!(v, vec![1, 0, 0, 0]);
-}
-
-#[test]
-fn test_pad_twice_v3() {
-    let mut v = vec![1];
-    pad_with_zeros_v3(&mut v, 2);
-    pad_with_zeros_v3(&mut v, 4);
-    assert_eq!(v, vec![1, 0, 0, 0]);
-}
-
-/*
-    Problem 7: Move semantics continued
-
-    Write a function which appends a row to a vector of vectors.
-    Notice that it takes ownership over the row.
-    You shouldn't need to use .clone().
-
-    Why is this more general than being passed a &[bool]
-    and cloning it?
-
-    Second, write a function which returns whether
-    a row equals the first row in the vector of vectors.
-    Notice that it does not take ownership over the row.
-
-    Why is this more general than being passed a Vec<bool>?
-*/
-
-fn append_row(grid: &mut Vec<Vec<bool>>, row: Vec<bool>) {
-    unimplemented!()
-}
-
-fn is_first_row(grid: &[Vec<bool>], row: &[bool]) -> bool {
-    // Check if row is the first row in grid
-    // Remember to handle the case when grid is empty
-}
-
-/*
-    Problem 8: Modifying while iterating
-
-    In C and C++, you run into subtle bugs if you try to modify a data
-    structure while iterating over it. Rust's move semantics prevents that.
-*/
-
-use std::collections::HashMap;
-
-// To familiarize yourself with HashMaps,
-// implement the following function which converts pairs from a slice
-// into key-value pairs in a hashmap.
-// Documentation:
-// https://doc.rust-lang.org/std/collections/struct.HashMap.html
-
-fn vector_to_hashmap(v: &[(i32, String)]) -> HashMap<i32, String> {
-    unimplemented!();
-}
-
-// Now rewrite this function to delete all entries in hashmap where the keys
-// are negative.
-fn delete_negative_keys(h: &mut HashMap<i32, i32>) {
-    // This fails, uncomment to see error.
-    // for k in h.keys() {
-    //     if *k < 0 {
-    //         h.remove(k);
-    //     }
-    // }
-}
-
-/*
     Problem 9: The Entry API
 
     Move semantics present interesting API design choices not found in other
@@ -537,5 +356,32 @@ fn merge_maps(
     merged: &mut HashMap<String, String>,
     add: HashMap<String,String>
 ) {
-    unimplemented!()
+    for (key, value) in add.into_iter() {
+        merged.entry(key)
+            .and_modify(|val| val.push_str(value.as_str()))
+            .or_insert(value);
+    }
+}
+
+#[test]
+fn test_merge_maps() {
+    let mut merged: &mut HashMap<String, String> = &mut HashMap::new();
+    merged.insert("a".to_string(), "1".to_string());
+
+    let mut add: HashMap<String, String> = HashMap::new();
+    add.insert("b".to_string(), "2".to_string());
+    add.insert("a".to_string(), "3".to_string());
+
+    merge_maps(&mut merged, add);
+
+    let mut expected: HashMap<String, String> = HashMap::new();
+    expected.insert("a".to_string(), "13".to_string());
+    expected.insert("b".to_string(), "2".to_string());
+
+    for (key, val) in expected.into_iter() {
+        match merged.get(&key) {
+            Some(merged_value) => assert_eq!(val, *merged_value),
+            None => assert!(false)
+        }
+    }
 }
