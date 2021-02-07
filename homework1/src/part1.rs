@@ -24,30 +24,42 @@
 */
 
 pub fn double_v1(n: i32) -> i32 {
-    unimplemented!()
+    n << 1
 }
 
 pub fn double_v2(n: &i32) -> i32 {
-    unimplemented!()
+    n << 1
 }
 
 pub fn double_v3(n: &mut i32) {
-    // double n in place
-    unimplemented!()
+    *n <<= 1
 }
 
-// Example unit test (so you can recall the syntax)
 #[test]
 fn test_double_v1() {
     assert_eq!(double_v1(2), 4);
     assert_eq!(double_v1(-3), -6);
 }
-// #[test]
-// fn test_double_v2() {
-// }
-// #[test]
-// fn test_double_v3() {
-// }
+
+#[test]
+fn test_double_v2() {
+    let n: i32 = 2;
+    assert_eq!(double_v2(&n), 4);
+
+    let n = -3;
+    assert_eq!(double_v2(&n), -6);
+}
+
+#[test]
+fn test_double_v3() {
+    let mut n: i32 = 2;
+    double_v3(&mut n);
+    assert_eq!(n, 4);
+
+    n = -3;
+    double_v3(&mut n);
+    assert_eq!(n, -6);
+}
 
 /*
     Problem 2: Integer square root
