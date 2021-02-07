@@ -108,30 +108,40 @@ fn test_duplicate_string() {
  }
 
 
-// /*
-//     Problem 4: Lifetime specifiers
-//
-//     For each of the following three functions, either implement it by adding
-//     lifetime specifiers, or explain why this is not possible.
-//
-//     (It's not truly impossible -- we will see later on that advanced features
-//     such as "unsafe code" can be used to turn off Rust's safety and lifetime
-//     checks.)
-// */
-// // fn new_ref_string() -> &String {
-// //     unimplemented!();
-// // }
-//
-// // fn new_ref_str() -> &str {
-// //     unimplemented!();
-// // }
-//
-// // The same function from part2
-// // fn pick_longest2(s1: &str, s2: &str) -> &str {
-// //     unimplemented!()
-// // }
-//
-// /*
+/*
+    Problem 4: Lifetime specifiers
+
+    For each of the following three functions, either implement it by adding
+    lifetime specifiers, or explain why this is not possible.
+
+    (It's not truly impossible -- we will see later on that advanced features
+    such as "unsafe code" can be used to turn off Rust's safety and lifetime
+    checks.)
+*/
+// fn new_ref_string() -> &String {
+//     &String::from("meow")
+//     // Error: cannot return reference to temporary value. I assume, it happens due to a nature
+//     // of String type.
+// }
+
+fn new_ref_str<'a>() -> &'a str {
+    "lol"
+}
+
+// The same function from part2
+fn pick_longest2<'a>(s1: &'a str, s2: &'a str) -> &'a str {
+    if s1.len() < s2.len() { s2 } else { s1 }
+}
+
+#[test]
+fn test_lifetime_specs() {
+    assert_eq!(new_ref_str(), "lol");
+    assert_eq!(
+        pick_longest2("dog", "dogs"), "dogs"
+    );
+}
+
+/*
 //     Problem 5: Using functions with lifetimes
 //
 //     Write two versions of a function which returns the longest string in a
