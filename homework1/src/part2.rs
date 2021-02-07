@@ -133,11 +133,16 @@ pub fn add1(x : &mut i32) -> () {
     The error says: cannot assign to immutable borrowed content `*str1`
     But we declared it mutable? Fix by changing only the line below.
 */
-// pub fn mut2() {
-//     let hello = String::from("hello");
-//
-//     // CHANGE ONLY THIS LINE:
-//     let mut str1: &String = &String::from("str1");
-//
-//     *str1 = hello;
-// }
+pub fn mut2() {
+    let hello = String::from("hello");
+
+    // CHANGE ONLY THIS LINE:
+    let str1 = &mut String::from("str1");
+
+    *str1 = hello;
+}
+
+#[test]
+fn test_mut2() {
+    mut2();
+}
