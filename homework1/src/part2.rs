@@ -6,10 +6,6 @@
     Answer the questions as a comment next to the problems.
 */
 
-// Remove these once you are done editing the file!
-#![allow(dead_code)]
-#![allow(unused_variables)]
-
 use std::fs::File;
 use std::io::Read;
 
@@ -98,7 +94,15 @@ fn test_pick_longest() {
 */
 
 pub fn file_to_string(path: &str) -> String {
-    unimplemented!()
+    let mut f = File::open(path).expect("ignore for a while");
+    let mut buffer: String = String::new();
+    f.read_to_string(&mut buffer).expect("ignore again :(");
+    buffer
+}
+
+#[test]
+fn test_file_to_string() {
+    assert_eq!(file_to_string("./docs/test_file.txt"), "Привет!");
 }
 
 /*
