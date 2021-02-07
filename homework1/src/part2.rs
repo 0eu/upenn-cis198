@@ -111,17 +111,20 @@ fn test_file_to_string() {
     Why does the following implementation not work as expected?
     Fix by changing the type signature of add1 and the way it's called on add1_test().
     do NOT change the return type.
+
+    Solution: if we want to modify a variable in-place, there should be a mut specifier
+    in function's signature and function invocation.
 */
 
 #[test]
 fn test_add1() {
     let mut x = 1;
-    add1(x);
+    add1(&mut x);
     assert_eq!(x, 2);
 }
 
-pub fn add1(mut x : i32) -> () {
-    x += 1;
+pub fn add1(x : &mut i32) -> () {
+    *x += 1;
 }
 
 /*
