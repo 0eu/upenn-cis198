@@ -66,8 +66,8 @@ fn copy_int_test() {
 }
 //
 // Now implement the following function that duplicates a string n times.
-fn duplicate_string(s: &str, times: usize) -> Vec<String> {
-    (0..times).into_iter().map(|_| s.clone().to_string()).collect::<Vec<String>>()
+pub fn duplicate_string(s: &str, times: usize) -> Vec<String> {
+    (0..times).into_iter().map(|_| s.to_string()).collect::<Vec<String>>()
 }
 
 #[test]
@@ -86,23 +86,22 @@ fn test_duplicate_string() {
     it's called.
 */
 
- fn copy_me(string: &String) -> String {
-     string.clone()
- }
+pub fn copy_me(string: &str) -> String {
+    string.to_string()
+}
 
- #[test]
- fn copy_me_test() {
-     let str1 = String::from("foo");
-     assert_eq!(str1, copy_me(&str1));
- }
+#[test]
+fn copy_me_test() {
+    let str1 = String::from("foo");
+    assert_eq!(str1, copy_me(&str1));
+}
 
- #[test]
- fn copy_me_test2() {
-     let str1 = String::from("foo");
-     let str2 = copy_me(&str1);
-     assert_eq!(str1, str2);
- }
-
+#[test]
+fn copy_me_test2() {
+    let str1 = String::from("foo");
+    let str2 = copy_me(&str1);
+    assert_eq!(str1, str2);
+}
 
 /*
     Problem 4: Lifetime specifiers
@@ -120,21 +119,23 @@ fn test_duplicate_string() {
 //     // of String type.
 // }
 
-fn new_ref_str<'a>() -> &'a str {
+pub fn new_ref_str<'a>() -> &'a str {
     "lol"
 }
 
 // The same function from part2
-fn pick_longest2<'a>(s1: &'a str, s2: &'a str) -> &'a str {
-    if s1.len() < s2.len() { s2 } else { s1 }
+pub fn pick_longest2<'a>(s1: &'a str, s2: &'a str) -> &'a str {
+    if s1.len() < s2.len() {
+        s2
+    } else {
+        s1
+    }
 }
 
 #[test]
 fn test_lifetime_specs() {
     assert_eq!(new_ref_str(), "lol");
-    assert_eq!(
-        pick_longest2("dog", "dogs"), "dogs"
-    );
+    assert_eq!(pick_longest2("dog", "dogs"), "dogs");
 }
 
 /*
@@ -151,16 +152,27 @@ fn test_lifetime_specs() {
     Q2. What are the pros and cons of v1 and v2?
 */
 
-fn pick_longest_in_v1(v: Vec<String>) -> String {
+pub fn pick_longest_in_v1(v: Vec<String>) -> String {
     v.iter().fold(String::new(), |result, value| {
-        if value.len() < result.len() { result } else { value.clone() }
+        if value.len() < result.len() {
+            result
+        } else {
+            value.clone()
+        }
     })
 }
 
-fn pick_longest_in_v2<'a>(v: Vec<&'a str>) -> &'a str {
-    v.iter().fold("", |result, &value| {
-        if value.len() < result.len() { result } else { value }
-    })
+pub fn pick_longest_in_v2<'a>(v: Vec<&'a str>) -> &'a str {
+    v.iter().fold(
+        "",
+        |result, &value| {
+            if value.len() < result.len() {
+                result
+            } else {
+                value
+            }
+        },
+    )
 }
 
 #[test]
@@ -169,10 +181,7 @@ fn test_pick_longest_in_vectors() {
         pick_longest_in_v1(vec!["A".to_string(), "aaaa".to_string()]),
         "aaaa".to_string()
     );
-    assert_eq!(
-        pick_longest_in_v2(vec!["A", "aaaa"]),
-        "aaaa"
-    );
+    assert_eq!(pick_longest_in_v2(vec!["A", "aaaa"]), "aaaa");
 }
 
 /*
@@ -186,31 +195,27 @@ fn test_pick_longest_in_vectors() {
     Which of these functions do you prefer? Which is the most efficient?
 */
 
-fn pad_with_zeros_v1(v: Vec<usize>, desired_len: usize) -> Vec<usize> {
+pub fn pad_with_zeros_v1(v: Vec<usize>, desired_len: usize) -> Vec<usize> {
     let n = desired_len - v.len();
-    let result = v
-        .iter()
-        .chain((0..n).map(|_| &0))
-        .fold(Vec::new(), |mut acc, val| {
+    let result =
+        v.iter().chain((0..n).map(|_| &0)).fold(Vec::new(), |mut acc, val| {
             acc.push(*val);
             acc
-         });
+        });
     debug_assert_eq!(result.len(), desired_len);
     result
 }
 
-fn pad_with_zeros_v2(slice: &[usize], desired_len: usize) -> Vec<usize> {
+pub fn pad_with_zeros_v2(slice: &[usize], desired_len: usize) -> Vec<usize> {
     pad_with_zeros_v1(slice.to_vec(), desired_len)
 }
 
-fn pad_with_zeros_v3(v: &mut Vec<usize>, desired_len: usize) {
+pub fn pad_with_zeros_v3(v: &mut Vec<usize>, desired_len: usize) {
     let n = desired_len - v.len();
-    (0..=n)
-        .into_iter()
-        .fold(v, |v, zero| {
-            v.push(zero);
-            v
-        });
+    (0..=n).into_iter().fold(v, |v, zero| {
+        v.push(zero);
+        v
+    });
 }
 
 #[test]
@@ -254,7 +259,7 @@ fn test_pad_twice_v3() {
     Why is this more general than being passed a Vec<bool>?
 */
 
-fn append_row(grid: &mut Vec<Vec<bool>>, row: Vec<bool>) {
+pub fn append_row(grid: &mut Vec<Vec<bool>>, row: Vec<bool>) {
     grid.push(row);
 }
 
@@ -266,21 +271,17 @@ fn test_append_row() {
     assert_eq!(grid, &mut vec![vec![true], vec![false], vec![true]]);
 }
 
-fn is_first_row(grid: &[Vec<bool>], row: &[bool]) -> bool {
+pub fn is_first_row(grid: &[Vec<bool>], row: &[bool]) -> bool {
     match grid.first() {
         Some(r) => *r == row.to_vec(),
-        None => false
+        None => false,
     }
 }
 
 #[test]
 fn test_is_first_row() {
-    assert_eq!(
-        is_first_row(&[vec![true], vec![false]], &[true]), true
-    );
-    assert_eq!(
-        is_first_row(&[], &[true]), false
-    );
+    assert_eq!(is_first_row(&[vec![true], vec![false]], &[true]), true);
+    assert_eq!(is_first_row(&[], &[true]), false);
 }
 
 /*
@@ -298,13 +299,11 @@ use std::collections::HashMap;
 // Documentation:
 // https://doc.rust-lang.org/std/collections/struct.HashMap.html
 
-fn vector_to_hashmap(v: &[(i32, String)]) -> HashMap<i32, String> {
-    v
-        .into_iter()
-        .fold(HashMap::new(), |mut dict, (key, value)| {
-            dict.insert(*key, value.to_string());
-            dict
-        })
+pub fn vector_to_hashmap(v: &[(i32, String)]) -> HashMap<i32, String> {
+    v.iter().fold(HashMap::new(), |mut dict, (key, value)| {
+        dict.insert(*key, value.to_string());
+        dict
+    })
 }
 
 #[test]
@@ -321,14 +320,16 @@ fn test_vector_to_hashmap() {
 
 // Now rewrite this function to delete all entries in hashmap where the keys
 // are negative.
-fn delete_negative_keys(h: &mut HashMap<i32, i32>) {
+pub fn delete_negative_keys(h: &mut HashMap<i32, i32>) {
     h.retain(|key, _| *key >= 0);
 }
 
 #[test]
 fn test_delete_negative_keys() {
     let mut hm: HashMap<i32, i32> = HashMap::new();
-    (-5..5).into_iter().for_each(|id| { hm.insert(id, id); });
+    (-5..5).into_iter().for_each(|id| {
+        hm.insert(id, id);
+    });
     delete_negative_keys(&mut hm);
     assert_eq!(hm.into_iter().all(|(key, _)| key >= 0), true);
 }
@@ -352,12 +353,13 @@ fn test_delete_negative_keys() {
     Use `or_insert` and `and_modify`.
 */
 
-fn merge_maps(
+pub fn merge_maps(
     merged: &mut HashMap<String, String>,
-    add: HashMap<String,String>
+    add: HashMap<String, String>,
 ) {
     for (key, value) in add.into_iter() {
-        merged.entry(key)
+        merged
+            .entry(key)
             .and_modify(|val| val.push_str(value.as_str()))
             .or_insert(value);
     }
@@ -381,7 +383,7 @@ fn test_merge_maps() {
     for (key, val) in expected.into_iter() {
         match merged.get(&key) {
             Some(merged_value) => assert_eq!(val, *merged_value),
-            None => assert!(false)
+            None => assert!(false),
         }
     }
 }

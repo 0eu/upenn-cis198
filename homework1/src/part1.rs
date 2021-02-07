@@ -69,14 +69,23 @@ fn test_double_v3() {
     Solution: used a binary search to find an answer in O(log n)
 */
 pub fn sqrt(n: usize) -> usize {
-    if n == 0 || n == 1 { return n; }
+    if n == 0 || n == 1 {
+        return n;
+    }
     let (mut lo, mut hi, mut answer): (usize, usize, usize) = (1, n, 0);
     while lo <= hi {
         let mid: usize = lo + (hi - lo) / 2;
         match n.cmp(&(mid * mid)) {
-            Ordering::Equal => { return mid; },
-            Ordering::Less => { hi = mid - 1; },
-            Ordering::Greater => { answer = mid; lo = mid + 1; },
+            Ordering::Equal => {
+                return mid;
+            }
+            Ordering::Less => {
+                hi = mid - 1;
+            }
+            Ordering::Greater => {
+                answer = mid;
+                lo = mid + 1;
+            }
         }
     }
     answer
@@ -114,17 +123,16 @@ pub fn sum_v2(slice: &[i32]) -> i32 {
     slice.iter().fold(0, |acc, value| *value + acc)
 }
 
-
 #[test]
 fn test_sum_v1() {
-    assert_eq!(sum_v1(&[1,2,3,4,5]), 15);
+    assert_eq!(sum_v1(&[1, 2, 3, 4, 5]), 15);
     assert_eq!(sum_v1(&[1]), 1);
     assert_eq!(sum_v1(&[]), 0);
 }
 
 #[test]
 fn test_sum_v2() {
-    assert_eq!(sum_v2(&[1,2,3,4,5]), 15);
+    assert_eq!(sum_v2(&[1, 2, 3, 4, 5]), 15);
     assert_eq!(sum_v2(&[1]), 1);
     assert_eq!(sum_v2(&[]), 0);
 }
@@ -140,7 +148,7 @@ fn test_sum_v2() {
 
 pub fn unique(slice: &[i32]) -> Vec<i32> {
     slice
-        .into_iter()
+        .iter()
         .fold(HashSet::new(), |mut hs: HashSet<i32>, value| {
             hs.insert(*value);
             hs
@@ -149,19 +157,18 @@ pub fn unique(slice: &[i32]) -> Vec<i32> {
         .collect::<Vec<i32>>()
 }
 
-
 #[test]
 fn test_unique() {
-    assert_eq!(unique(&[1,1,1]), vec![1]);
+    assert_eq!(unique(&[1, 1, 1]), vec![1]);
     assert_eq!(unique(&[]), vec![]);
 
-    let mut unique_elements = unique(&[1,1,1,2,3]);
+    let mut unique_elements = unique(&[1, 1, 1, 2, 3]);
     unique_elements.sort();
     assert_eq!(unique_elements, vec![1, 2, 3]);
 
-    unique_elements = unique(&[1,2,3]);
+    unique_elements = unique(&[1, 2, 3]);
     unique_elements.sort();
-    assert_eq!(unique_elements, vec![1,2,3]);
+    assert_eq!(unique_elements, vec![1, 2, 3]);
 }
 
 /*
@@ -203,15 +210,13 @@ fn test_filter() {
     where v[i] is the ith fibonacci number.
 */
 pub fn fibonacci(n1: i32, n2: i32, out_size: usize) -> Vec<i32> {
-    let (mut a, mut b) = (n1.clone(), n2.clone());
-    (0..out_size)
-        .into_iter()
-        .fold(vec![], |mut acc: Vec<i32>, _| {
-            let temp = b;
-            b = a + b;
-            a = temp;
-            acc.push(b);
-            acc
+    let (mut a, mut b) = (n1, n2);
+    (0..out_size).into_iter().fold(vec![], |mut acc: Vec<i32>, _| {
+        let temp = b;
+        b += a;
+        a = temp;
+        acc.push(b);
+        acc
     })
 }
 
@@ -272,7 +277,8 @@ pub fn concat_all(v: Vec<String>) -> String {
 
 #[test]
 fn test_concat_all() {
-    let input: Vec<String> = vec!["a".to_string(), "b".to_string(), "c".to_string()];
+    let input: Vec<String> =
+        vec!["a".to_string(), "b".to_string(), "c".to_string()];
     assert_eq!(concat_all(input), String::from("abc"));
 }
 /*
@@ -290,7 +296,9 @@ fn test_concat_all() {
 */
 
 pub fn parse_all(v: Vec<String>) -> Vec<i32> {
-    v.iter().map(|value| value.parse::<i32>().expect(":)")).collect::<Vec<i32>>()
+    v.iter()
+        .map(|value| value.parse::<i32>().expect(":)"))
+        .collect::<Vec<i32>>()
 }
 
 pub fn print_all(v: Vec<i32>) -> Vec<String> {

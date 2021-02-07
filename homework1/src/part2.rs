@@ -22,26 +22,26 @@ use std::io::Read;
 // split_clone must have the return type Vec<String>
 
 pub fn split_ref(input: &str) -> Vec<&str> {
-   input.split(" ").collect::<Vec<&str>>()
+    input.split(' ').collect::<Vec<&str>>()
 }
 
 pub fn split_clone(input: &str) -> Vec<String> {
-    input.split(" ").map(|val| val.to_string()).collect::<Vec<String>>()
+    input.split(' ').map(|val| val.to_string()).collect::<Vec<String>>()
 }
 
 #[test]
 fn test_split_ref() {
     let string = "Hello World!".to_string();
-    assert_eq!(split_ref(& string), ["Hello", "World!"]);
-    assert_eq!(split_ref("Hello World!"), & ["Hello", "World!"]);
+    assert_eq!(split_ref(&string), ["Hello", "World!"]);
+    assert_eq!(split_ref("Hello World!"), &["Hello", "World!"]);
     assert_eq!(split_ref("Hello World!"), vec!["Hello", "World!"]);
 }
 
 #[test]
-fn test_split_clone(){
+fn test_split_clone() {
     let string = "Hello World!".to_string();
-    assert_eq!(split_clone(& string), ["Hello", "World!"]);
-    assert_eq!(split_clone("Hello World!"), & ["Hello", "World!"]);
+    assert_eq!(split_clone(&string), ["Hello", "World!"]);
+    assert_eq!(split_clone("Hello World!"), &["Hello", "World!"]);
     assert_eq!(split_clone("Hello World!"), vec!["Hello", "World!"]);
 }
 
@@ -53,17 +53,21 @@ fn test_split_clone(){
     Return a new String (we will see later how to return a &str.)
 */
 pub fn pick_longest<'a>(s1: &'a str, s2: &'a str) -> &'a str {
-    if s1.len() < s2.len() { s2 } else { s1 }
+    if s1.len() < s2.len() {
+        s2
+    } else {
+        s1
+    }
 }
 
 #[test]
 fn test_pick_longest() {
     assert_eq!(
-        pick_longest(& "cat".to_string(), & "dog".to_string()),
+        pick_longest(&"cat".to_string(), &"dog".to_string()),
         "cat".to_string()
     );
     assert_eq!(
-        pick_longest(& "cat".to_string(), & "dogs".to_string()),
+        pick_longest(&"cat".to_string(), &"dogs".to_string()),
         "dogs".to_string()
     );
 }
@@ -123,7 +127,7 @@ fn test_add1() {
     assert_eq!(x, 2);
 }
 
-pub fn add1(x : &mut i32) -> () {
+pub fn add1(x: &mut i32) {
     *x += 1;
 }
 
