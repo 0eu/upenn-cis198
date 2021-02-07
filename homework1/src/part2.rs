@@ -52,18 +52,25 @@ fn test_split_clone(){
 /*
     Problem 2: Longest string
 
-    Write function pick_longest which picks the longests of two &str arguments.
+    Write function pick_longest which picks the longest of two &str arguments.
     Taking &str arguments makes it more general than taking Strings.
     Return a new String (we will see later how to return a &str.)
 */
+pub fn pick_longest<'a>(s1: &'a str, s2: &'a str) -> &'a str {
+    if s1.len() < s2.len() { s2 } else { s1 }
+}
 
-// #[test]
-// fn test_pick_longest {
-//     assert_eq!(
-//         pick_longest(& "cat".to_string(), & "dog".to_string()),
-//         "cat".to_string()
-//     );
-// }
+#[test]
+fn test_pick_longest() {
+    assert_eq!(
+        pick_longest(& "cat".to_string(), & "dog".to_string()),
+        "cat".to_string()
+    );
+    assert_eq!(
+        pick_longest(& "cat".to_string(), & "dogs".to_string()),
+        "dogs".to_string()
+    );
+}
 
 // Question 1:
 // For the curious, attempt to return reference, that is:
@@ -72,6 +79,9 @@ fn test_split_clone(){
 //
 // What goes wrong when you try to implement this function? Why is this
 // the case?
+//
+// Answer: the problem is related to lifetimes. Correct version:
+// fn pick_longest<'a>(s1: &'a str, s2: &'a str) -> &'a str
 
 /*
     Problem 3: File to string
