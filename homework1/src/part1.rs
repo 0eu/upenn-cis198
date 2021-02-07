@@ -1,4 +1,5 @@
 use std::cmp::Ordering;
+use std::collections::HashSet;
 /*
     CIS198 Homework 1
     Part 1: Implementing functions
@@ -175,7 +176,13 @@ fn test_unique() {
     to know is that pred is a function from i32 to bool.
 */
 pub fn filter(slice: &[i32], pred: impl Fn(i32) -> bool) -> Vec<i32> {
-    unimplemented!()
+    let mut result: Vec<i32> = Vec::new();
+    for &v in slice {
+        if pred(v) {
+            result.push(v);
+        }
+    }
+    result
 }
 
 #[test]
@@ -184,6 +191,12 @@ fn test_filter() {
         n % 2 == 0
     }
     assert_eq!(filter(&vec![1, 2, 3, 4, 5, 6], &is_even), vec![2, 4, 6]);
+
+    fn is_odd(n: i32) -> bool {
+        !is_even(n)
+    }
+
+    assert_eq!(filter(&vec![1, 2, 3, 4, 5, 6], &is_odd), vec![1, 3, 5]);
 }
 
 /*
