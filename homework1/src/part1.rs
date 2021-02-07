@@ -237,11 +237,28 @@ fn test_fibonacci() {
     What are some reasons the second function is not efficient?
 */
 pub fn str_concat(s1: &str, s2: &str) -> String {
-    unimplemented!()
+    let mut owned_string: String = s1.to_owned();
+    owned_string.push_str(s2);
+    owned_string
 }
 
 pub fn string_concat(s1: String, s2: String) -> String {
-    unimplemented!()
+    str_concat(s1.as_str(), s2.as_str())
+}
+
+
+#[test]
+fn test_str_concat() {
+    let abc: &str = "abc";
+    let def: &str = "def";
+    assert_eq!(str_concat(abc, def), String::from("abcdef"));
+}
+
+#[test]
+fn test_string_concat() {
+    let abc: String = String::from("abc");
+    let def: String = String::from("def");
+    assert_eq!(string_concat(abc, def), String::from("abcdef"));
 }
 
 /*
