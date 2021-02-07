@@ -47,30 +47,40 @@ fn test_swap_ints() {
 /*
     Problem 2: String duplication
 */
-// #[test]
-// fn copy_string_test() {
-//     let str1 = String::from("foo");
-//     let str2 = str1;
-//     assert_eq!(str1, str2);
-// }
+
+#[test]
+fn copy_string_test() {
+    let str1 = String::from("foo");
+    let str2 = str1.clone();
+    assert_eq!(str1, str2);
+}
+
 // This test doesn't work. Fix it by copying strings properly.
 // Q1. What went wrong?
+// A1: A value was moved to str2 and no longer available in str1 due to String points to the
+// heap.
 
 // Q2. How come it works fine here?
+// A2: Primitive data types, such as ints in the example below, are being cloned automatically.
 #[test]
 fn copy_int_test() {
     let i1 = 1;
     let i2 = i1;
     assert_eq!(i1, i2);
 }
-
+//
 // Now implement the following function that duplicates a string n times.
 fn duplicate_string(s: &str, times: usize) -> Vec<String> {
-    unimplemented!()
+    (0..times).into_iter().map(|_| s.clone().to_string()).collect::<Vec<String>>()
 }
 
-/*
-    Problem 3: String duplication continued
+#[test]
+fn test_duplicate_string() {
+    assert_eq!(
+        duplicate_string("a", 10),
+        vec!["a", "a", "a", "a", "a", "a", "a", "a", "a", "a"]
+    );
+}
 
     These two don't work either. Fix by changing the type of "string" in the
     function copy_me ONLY, and by adjusting the parameter to "copy_me" where
