@@ -23,11 +23,25 @@
        the two references are the same. Why don't you need to worry about this
        case in Rust?
 
+    A: There can be the only one mutable borrow at time. So, if we try to swap
+    the same reference there will be an error: "cannot borrow `a` as mutable more
+    than once at a time"
+
     (Try writing a unit test where they are both
     the same, i.e. swap_ints(&mut x, &mut x).)
 */
 pub fn swap_ints(x1: &mut i32, x2: &mut i32) {
-    unimplemented!()
+    *x1 ^= *x2;
+    *x2 ^= *x1;
+    *x1 ^= *x2;
+}
+
+#[test]
+fn test_swap_ints() {
+    let (mut a, mut b) = (1337, 2000);
+    swap_ints(&mut a, &mut b);
+    assert_eq!(a, 2000);
+    assert_eq!(b, 1337);
 }
 
 /*
