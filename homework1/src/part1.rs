@@ -1,3 +1,4 @@
+use std::cmp::Ordering;
 /*
     CIS198 Homework 1
     Part 1: Implementing functions
@@ -67,12 +68,31 @@ fn test_double_v3() {
     Implement the integer square root function: sqrt(n) should return the
     largest m such that m * m <= n. For a 'harder' version, try to do it more
     efficiently than trying every possibility.
+
+    Solution: used a binary search to find an answer in O(log n)
 */
 pub fn sqrt(n: usize) -> usize {
-    unimplemented!()
+    if n == 0 || n == 1 { return n; }
+    let (mut lo, mut hi, mut answer): (usize, usize, usize) = (1, n, 0);
+    while lo <= hi {
+        let mid: usize = lo + (hi - lo) / 2;
+        match n.cmp(&(mid * mid)) {
+            Ordering::Equal => { return mid; },
+            Ordering::Less => { hi = mid - 1; },
+            Ordering::Greater => { answer = mid; lo = mid + 1; },
+        }
+    }
+    answer
 }
 
-// Remember to write unit tests here (and on all future functions)
+#[test]
+fn test_sqrt() {
+    assert_eq!(sqrt(10), 3);
+    assert_eq!(sqrt(4), 2);
+    assert_eq!(sqrt(1), 1);
+    assert_eq!(sqrt(100), 10);
+    assert_eq!(sqrt(99), 9);
+}
 
 /*
     Problem 3: Slice sum
