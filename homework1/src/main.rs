@@ -1,6 +1,6 @@
 pub mod part1;
 pub mod part2;
-// pub mod part3;
+pub mod part3;
 
 fn main() {
     println!("===== CIS198 Homework 1 Main Function =====");
