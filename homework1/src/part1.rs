@@ -269,9 +269,17 @@ fn test_string_concat() {
 */
 
 pub fn concat_all(v: Vec<String>) -> String {
-    unimplemented!()
+    v.iter().fold(String::new(), |mut out, current| {
+        out.push_str(current);
+        out
+    })
 }
 
+#[test]
+fn test_concat_all() {
+    let input: Vec<String> = vec!["a".to_string(), "b".to_string(), "c".to_string()];
+    assert_eq!(concat_all(input), String::from("abc"));
+}
 /*
     Problem 9: Parsing
 
