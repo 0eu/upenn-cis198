@@ -106,21 +106,31 @@ fn test_sqrt() {
     Which of the two ways do you prefer?
 */
 pub fn sum_v1(slice: &[i32]) -> i32 {
-    // do some initialization...
+    let mut sum: i32 = 0;
     for &v in slice {
-        // ...
+        sum += v
     }
-    unimplemented!()
+    sum
 }
 
 pub fn sum_v2(slice: &[i32]) -> i32 {
-    // do some initialization...
-    for v in slice {
-        // ...
-    }
-    unimplemented!()
+    slice.iter().fold(0, |acc, value| *value + acc)
 }
 
+
+#[test]
+fn test_sum_v1() {
+    assert_eq!(sum_v1(&[1,2,3,4,5]), 15);
+    assert_eq!(sum_v1(&[1]), 1);
+    assert_eq!(sum_v1(&[]), 0);
+}
+
+#[test]
+fn test_sum_v2() {
+    assert_eq!(sum_v2(&[1,2,3,4,5]), 15);
+    assert_eq!(sum_v2(&[1]), 1);
+    assert_eq!(sum_v2(&[]), 0);
+}
 /*
     Problem 4: Unique
 
