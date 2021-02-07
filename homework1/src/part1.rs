@@ -295,11 +295,11 @@ fn test_concat_all() {
 */
 
 pub fn parse_all(v: Vec<String>) -> Vec<i32> {
-    unimplemented!()
+    v.iter().map(|value| value.parse::<i32>().expect(":)")).collect::<Vec<i32>>()
 }
 
 pub fn print_all(v: Vec<i32>) -> Vec<String> {
-    unimplemented!()
+    v.iter().map(|value| value.to_string()).collect::<Vec<String>>()
 }
 
 #[test]
