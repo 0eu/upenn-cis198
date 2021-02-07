@@ -259,12 +259,32 @@ fn test_pad_twice_v3() {
 */
 
 fn append_row(grid: &mut Vec<Vec<bool>>, row: Vec<bool>) {
-    unimplemented!()
+    grid.push(row);
+}
+
+#[test]
+fn test_append_row() {
+    let grid = &mut vec![vec![true], vec![false]];
+    let row = vec![true];
+    append_row(grid, row);
+    assert_eq!(grid, &mut vec![vec![true], vec![false], vec![true]]);
 }
 
 fn is_first_row(grid: &[Vec<bool>], row: &[bool]) -> bool {
-    // Check if row is the first row in grid
-    // Remember to handle the case when grid is empty
+    match grid.first() {
+        Some(r) => *r == row.to_vec(),
+        None => false
+    }
+}
+
+#[test]
+fn test_is_first_row() {
+    assert_eq!(
+        is_first_row(&[vec![true], vec![false]], &[true]), true
+    );
+    assert_eq!(
+        is_first_row(&[], &[true]), false
+    );
 }
 
 /*
