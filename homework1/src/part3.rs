@@ -288,7 +288,57 @@ fn test_is_first_row() {
 }
 
 /*
-//     Problem 8: Modifying while iterating
+    Problem 8: Modifying while iterating
+
+    In C and C++, you run into subtle bugs if you try to modify a data
+    structure while iterating over it. Rust's move semantics prevents that.
+*/
+
+use std::collections::HashMap;
+
+// To familiarize yourself with HashMaps,
+// implement the following function which converts pairs from a slice
+// into key-value pairs in a hashmap.
+// Documentation:
+// https://doc.rust-lang.org/std/collections/struct.HashMap.html
+
+fn vector_to_hashmap(v: &[(i32, String)]) -> HashMap<i32, String> {
+    v
+        .into_iter()
+        .fold(HashMap::new(), |mut dict, (key, value)| {
+            dict.insert(*key, value.to_string());
+            dict
+        })
+}
+
+#[test]
+fn test_vector_to_hashmap() {
+    let pairs = &[(1, "val1".to_string()), (2, "val2".to_string())];
+    let hm = vector_to_hashmap(pairs);
+    let mut index = 0;
+    for (key, value) in hm.into_iter() {
+        assert_eq!(key, pairs[index].0);
+        assert_eq!(value, pairs[index].1);
+        index += 1;
+    }
+}
+
+// Now rewrite this function to delete all entries in hashmap where the keys
+// are negative.
+fn delete_negative_keys(h: &mut HashMap<i32, i32>) {
+    h.retain(|key, _| *key >= 0);
+}
+
+#[test]
+fn test_delete_negative_keys() {
+    let mut hm: HashMap<i32, i32> = HashMap::new();
+    (-5..5).into_iter().for_each(|id| { hm.insert(id, id); });
+    delete_negative_keys(&mut hm);
+    assert_eq!(hm.into_iter().all(|(key, _)| key >= 0), true);
+}
+
+/*
+//     Problem 9: The Entry API
 //
 //     Use .clone() if necessary to make any additional unit tests compile.
 //
