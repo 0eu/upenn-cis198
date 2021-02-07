@@ -1,5 +1,6 @@
 use std::cmp::Ordering;
 use std::collections::HashSet;
+
 /*
     CIS198 Homework 1
     Part 1: Implementing functions
@@ -8,11 +9,6 @@ use std::collections::HashSet;
     If it already has a unit test, either add assertions to it or add a new one.
     Also answer the questions in text.
 */
-
-// Remove these once you are done editing the file!
-// This will result in useful warnings if you missed something.
-#![allow(dead_code)]
-#![allow(unused_variables)]
 
 /*
     Problem 1: Double
@@ -246,7 +242,6 @@ pub fn string_concat(s1: String, s2: String) -> String {
     str_concat(s1.as_str(), s2.as_str())
 }
 
-
 #[test]
 fn test_str_concat() {
     let abc: &str = "abc";
@@ -326,7 +321,9 @@ fn test_parse_print() {
 */
 
 pub fn concat_even_fibonaccis(n: usize) -> String {
-    unimplemented!()
+    let fib_sequence = fibonacci(1, 1, n);
+    let fib_sequence = filter(fib_sequence.as_slice(), |x| x & 1 == 0);
+    concat_all(print_all(fib_sequence))
 }
 
 #[test]
