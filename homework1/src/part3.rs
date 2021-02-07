@@ -180,10 +180,95 @@ fn test_pick_longest_in_vectors() {
 }
 
 /*
-//     Problem 6: Move semantics
-//
-//     Write three versions of a function that pads a vector with zeros.
-//     Fail if the vector is larger than the desired length.
+    Problem 6: Move semantics
+
+    Write three versions of a function that pads a vector with zeros.
+    Fail if the vector is larger than the desired length.
+
+    Use .clone() if necessary to make any additional unit tests compile.
+
+    Which of these functions do you prefer? Which is the most efficient?
+*/
+
+fn pad_with_zeros_v1(v: Vec<usize>, desired_len: usize) -> Vec<usize> {
+    let n = desired_len - v.len();
+    let result = v
+        .iter()
+        .chain((0..n).map(|_| &0))
+        .fold(Vec::new(), |mut acc, val| {
+            acc.push(*val);
+            acc
+         });
+    debug_assert_eq!(result.len(), desired_len);
+    result
+}
+
+fn pad_with_zeros_v2(slice: &[usize], desired_len: usize) -> Vec<usize> {
+    pad_with_zeros_v1(slice.to_vec(), desired_len)
+}
+
+fn pad_with_zeros_v3(v: &mut Vec<usize>, desired_len: usize) {
+    let n = desired_len - v.len();
+    (0..=n)
+        .into_iter()
+        .fold(v, |v, zero| {
+            v.push(zero);
+            v
+        });
+}
+
+#[test]
+fn test_pad_twice_v1() {
+    let v = vec![1];
+    let v = pad_with_zeros_v1(v, 2);
+    let v = pad_with_zeros_v1(v, 4);
+    assert_eq!(v, vec![1, 0, 0, 0]);
+}
+
+#[test]
+fn test_pad_twice_v2() {
+    let v = vec![1];
+    let v = pad_with_zeros_v2(&v, 2);
+    let v = pad_with_zeros_v2(&v, 4);
+    assert_eq!(v, vec![1, 0, 0, 0]);
+}
+
+#[test]
+fn test_pad_twice_v3() {
+    let mut v = vec![1];
+    pad_with_zeros_v3(&mut v, 2);
+    pad_with_zeros_v3(&mut v, 4);
+    assert_eq!(v, vec![1, 0, 0, 0]);
+}
+
+/*
+    Problem 7: Move semantics continued
+
+    Write a function which appends a row to a vector of vectors.
+    Notice that it takes ownership over the row.
+    You shouldn't need to use .clone().
+
+    Why is this more general than being passed a &[bool]
+    and cloning it?
+
+    Second, write a function which returns whether
+    a row equals the first row in the vector of vectors.
+    Notice that it does not take ownership over the row.
+
+    Why is this more general than being passed a Vec<bool>?
+*/
+
+fn append_row(grid: &mut Vec<Vec<bool>>, row: Vec<bool>) {
+    unimplemented!()
+}
+
+fn is_first_row(grid: &[Vec<bool>], row: &[bool]) -> bool {
+    // Check if row is the first row in grid
+    // Remember to handle the case when grid is empty
+}
+
+/*
+//     Problem 8: Modifying while iterating
 //
 //     Use .clone() if necessary to make any additional unit tests compile.
 //
