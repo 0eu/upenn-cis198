@@ -137,10 +137,34 @@ fn test_sum_v2() {
     Make unique. Create a new vector which contains each item in the vector
     only once! Much like a set would.
     This doesn't need to be efficient; you can use a for loop.
+
+    Solution: Memory O(N), Time O(N)
 */
 
 pub fn unique(slice: &[i32]) -> Vec<i32> {
-    unimplemented!()
+    slice
+        .into_iter()
+        .fold(HashSet::new(), |mut hs: HashSet<i32>, value| {
+            hs.insert(*value);
+            hs
+        })
+        .into_iter()
+        .collect::<Vec<i32>>()
+}
+
+
+#[test]
+fn test_unique() {
+    assert_eq!(unique(&[1,1,1]), vec![1]);
+    assert_eq!(unique(&[]), vec![]);
+
+    let mut unique_elements = unique(&[1,1,1,2,3]);
+    unique_elements.sort();
+    assert_eq!(unique_elements, vec![1, 2, 3]);
+
+    unique_elements = unique(&[1,2,3]);
+    unique_elements.sort();
+    assert_eq!(unique_elements, vec![1,2,3]);
 }
 
 /*
