@@ -142,28 +142,44 @@ fn test_lifetime_specs() {
 }
 
 /*
-//     Problem 5: Using functions with lifetimes
-//
-//     Write two versions of a function which returns the longest string in a
-//     vector, using pick_longest2 as a helper function.
-//
-//     If the vector is empty, return "".
-//
-//     Q1. In pick_longest_in_v2, if you were to explicitly specify the lifetime
-//         of the input and output, what should it be?
-//
-//     Q2. What are the pros and cons of v1 and v2?
-// */
-//
-// fn pick_longest_in_v1(v: Vec<String>) -> String {
-//     unimplemented!()
-// }
-//
-// fn pick_longest_in_v2(v: Vec<&str>) -> &str {
-//     unimplemented!()
-// }
-//
-// /*
+    Problem 5: Using functions with lifetimes
+
+    Write two versions of a function which returns the longest string in a
+    vector, using pick_longest2 as a helper function.
+
+    If the vector is empty, return "".
+
+    Q1. In pick_longest_in_v2, if you were to explicitly specify the lifetime
+        of the input and output, what should it be?
+
+    Q2. What are the pros and cons of v1 and v2?
+*/
+
+fn pick_longest_in_v1(v: Vec<String>) -> String {
+    v.iter().fold(String::new(), |result, value| {
+        if value.len() < result.len() { result } else { value.clone() }
+    })
+}
+
+fn pick_longest_in_v2<'a>(v: Vec<&'a str>) -> &'a str {
+    v.iter().fold("", |result, &value| {
+        if value.len() < result.len() { result } else { value }
+    })
+}
+
+#[test]
+fn test_pick_longest_in_vectors() {
+    assert_eq!(
+        pick_longest_in_v1(vec!["A".to_string(), "aaaa".to_string()]),
+        "aaaa".to_string()
+    );
+    assert_eq!(
+        pick_longest_in_v2(vec!["A", "aaaa"]),
+        "aaaa"
+    );
+}
+
+/*
 //     Problem 6: Move semantics
 //
 //     Write three versions of a function that pads a vector with zeros.
