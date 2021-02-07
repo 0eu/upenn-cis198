@@ -212,8 +212,8 @@ pub fn pad_with_zeros_v2(slice: &[usize], desired_len: usize) -> Vec<usize> {
 
 pub fn pad_with_zeros_v3(v: &mut Vec<usize>, desired_len: usize) {
     let n = desired_len - v.len();
-    (0..=n).into_iter().fold(v, |v, zero| {
-        v.push(zero);
+    (0..n).into_iter().fold(v, |v, _| {
+        v.push(0 as usize);
         v
     });
 }
@@ -310,11 +310,11 @@ pub fn vector_to_hashmap(v: &[(i32, String)]) -> HashMap<i32, String> {
 fn test_vector_to_hashmap() {
     let pairs = &[(1, "val1".to_string()), (2, "val2".to_string())];
     let hm = vector_to_hashmap(pairs);
-    let mut index = 0;
-    for (key, value) in hm.into_iter() {
-        assert_eq!(key, pairs[index].0);
-        assert_eq!(value, pairs[index].1);
-        index += 1;
+    for (key, value) in pairs.into_iter() {
+        match hm.get(key) {
+            Some(hm_value) => assert_eq!(hm_value, value),
+            None => assert!(false),
+        }
     }
 }
 
