@@ -82,13 +82,91 @@ fn test_duplicate_string() {
     );
 }
 
+/*
+    Problem 3: String duplication continued
+
     These two don't work either. Fix by changing the type of "string" in the
     function copy_me ONLY, and by adjusting the parameter to "copy_me" where
     it's called.
 */
 
-// fn copy_me(string: /* Change in here only*/ String) -> String {
-//     string.clone()
+ fn copy_me(string: &String) -> String {
+     string.clone()
+ }
+
+ #[test]
+ fn copy_me_test() {
+     let str1 = String::from("foo");
+     assert_eq!(str1, copy_me(&str1));
+ }
+
+ #[test]
+ fn copy_me_test2() {
+     let str1 = String::from("foo");
+     let str2 = copy_me(&str1);
+     assert_eq!(str1, str2);
+ }
+
+
+// /*
+//     Problem 4: Lifetime specifiers
+//
+//     For each of the following three functions, either implement it by adding
+//     lifetime specifiers, or explain why this is not possible.
+//
+//     (It's not truly impossible -- we will see later on that advanced features
+//     such as "unsafe code" can be used to turn off Rust's safety and lifetime
+//     checks.)
+// */
+// // fn new_ref_string() -> &String {
+// //     unimplemented!();
+// // }
+//
+// // fn new_ref_str() -> &str {
+// //     unimplemented!();
+// // }
+//
+// // The same function from part2
+// // fn pick_longest2(s1: &str, s2: &str) -> &str {
+// //     unimplemented!()
+// // }
+//
+// /*
+//     Problem 5: Using functions with lifetimes
+//
+//     Write two versions of a function which returns the longest string in a
+//     vector, using pick_longest2 as a helper function.
+//
+//     If the vector is empty, return "".
+//
+//     Q1. In pick_longest_in_v2, if you were to explicitly specify the lifetime
+//         of the input and output, what should it be?
+//
+//     Q2. What are the pros and cons of v1 and v2?
+// */
+//
+// fn pick_longest_in_v1(v: Vec<String>) -> String {
+//     unimplemented!()
+// }
+//
+// fn pick_longest_in_v2(v: Vec<&str>) -> &str {
+//     unimplemented!()
+// }
+//
+// /*
+//     Problem 6: Move semantics
+//
+//     Write three versions of a function that pads a vector with zeros.
+//     Fail if the vector is larger than the desired length.
+//
+//     Use .clone() if necessary to make any additional unit tests compile.
+//
+//     Which of these functions do you prefer? Which is the most efficient?
+// */
+//
+// fn pad_with_zeros_v1(v: Vec<usize>, desired_len: usize) -> Vec<usize> {
+//     unimplemented!()
+//     // debug_assert_eq!(result.len(), desired_len);
 // }
 
 // #[test]
